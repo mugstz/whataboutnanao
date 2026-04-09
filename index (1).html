@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คุณคือเมนูอะไรในร้านป้า?</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: linear-gradient(135deg, #fdf6e3 0%, #fce4ec 50%, #e8f5e9 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .container {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 36px;
+    max-width: 640px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .start-emoji { font-size: 64px; text-align: center; margin-bottom: 16px; }
+  .start-title { font-size: 26px; font-weight: 800; text-align: center; color: #1a1a1a; margin-bottom: 10px; line-height: 1.4; }
+  .start-sub { font-size: 15px; color: #888; text-align: center; margin-bottom: 32px; line-height: 1.7; }
+  .start-btn {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #ff8a65, #f06292);
+    border: none; border-radius: 14px;
+    font-size: 17px; font-weight: 700; color: white;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(240,98,146,0.35);
+    font-family: 'Sarabun', sans-serif;
+  }
+  .start-btn:hover { transform: translateY(-2px); }
+
+  .progress-bar-wrap { background: #f0f0f0; border-radius: 99px; height: 8px; margin-bottom: 28px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 99px; background: linear-gradient(135deg, #ff8a65, #f06292); transition: width 0.4s ease; }
+  .q-counter { font-size: 13px; color: #aaa; margin-bottom: 10px; text-align: right; }
+  .q-text { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 24px; line-height: 1.7; }
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+  .choice-btn {
+    background: #fafafa; border: 1.5px solid #eee; border-radius: 14px;
+    padding: 14px 18px; font-size: 15px; color: #333;
+    cursor: pointer; text-align: left; transition: all 0.15s; line-height: 1.5;
+    font-family: 'Sarabun', sans-serif;
+  }
+  .choice-label { font-weight: 700; color: #f06292; margin-right: 6px; }
+  .choice-btn:hover { background: #fff5f8; border-color: #f06292; }
+  .choice-btn.selected { background: linear-gradient(135deg, #fff5f8, #fff8f0); border-color: #ff8a65; color: #c0397a; font-weight: 600; }
+
+  .result-emoji { font-size: 72px; text-align: center; margin-bottom: 12px; }
+  .result-label { font-size: 13px; text-align: center; color: #aaa; letter-spacing: 2px; margin-bottom: 6px; }
+  .result-name { font-size: 28px; font-weight: 800; text-align: center; color: #e64a7b; margin-bottom: 20px; line-height: 1.3; }
+  .result-desc {
+    background: #fff8f5; border-radius: 16px; padding: 20px 22px;
+    font-size: 15px; color: #444; line-height: 1.8; margin-bottom: 24px;
+    border: 1px solid #ffe0d0;
+  }
+  .result-scores { background: #fafafa; border-radius: 14px; padding: 16px 20px; margin-bottom: 24px; border: 1px solid #f0f0f0; }
+  .result-scores-title { font-size: 13px; color: #aaa; margin-bottom: 12px; font-weight: 600; }
+  .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .score-name { font-size: 13px; color: #555; width: 170px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+  .score-track { flex: 1; height: 8px; background: #eee; border-radius: 99px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #ffb3c6, #f06292); transition: width 1s ease; }
+  .score-num { font-size: 12px; color: #aaa; width: 20px; text-align: right; flex-shrink: 0; }
+  .retry-btn {
+    display: block; width: 100%; padding: 15px;
+    border: 2px solid #eee; border-radius: 14px;
+    font-size: 15px; font-weight: 600; color: #888;
+    background: white; cursor: pointer; transition: all 0.15s;
+    font-family: 'Sarabun', sans-serif;
+  }
+  .retry-btn:hover { border-color: #ccc; color: #555; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="screen active" id="screen-start">
+    <div class="start-emoji">🍜</div>
+    <div class="start-title">คุณคือเมนูอะไรในร้านป้า?</div>
+    <div class="start-sub">ป้ามีเมนูพิเศษ 12 อย่าง<br>ตอบคำถาม 10 ข้อแล้วป้าจะแนะนำเมนูที่ใช่สำหรับหนูเอง 🍽️</div>
+    <button class="start-btn" onclick="startQuiz()">เข้าร้านป้าเลย →</button>
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="q-counter" id="q-counter">ข้อ 1 / 10</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-label">ป้าแนะนำเมนู</div>
+    <div class="result-name" id="result-name"></div>
+    <div class="result-desc" id="result-desc"></div>
+    <div class="result-scores">
+      <div class="result-scores-title">คะแนนทุกเมนู</div>
+      <div id="score-bars"></div>
+    </div>
+    <button class="retry-btn" onclick="resetQuiz()">กลับมากินอีกครั้ง 🍜</button>
+  </div>
+
+</div>
+<script>
+const results = {
+  "บลูแก้มหอม": {
+    emoji: "🍲",
+    desc: "ป้าว่าแล้วหนูต้องสั่งจานนี้ รสชาติที่กลมกล่อม รสชาติเหมือนซดมาม่าตอนกลางคืน รู้แหละว่าตื่นมาหน้าบวมแต่กลิ่นมันหอม ความอดทนมีจำกัด"
+  },
+  "บลูแหม่ม": {
+    emoji: "🌶️",
+    desc: "หนูกินเผ็ดได้มั้ย ถ้าไม่ได้ป้าขอเตือนนะ เพราะรสชาตินี้พวกพี่สาวเขาชอบ ต้มยำม๋าเด็ก ผัดเผ็ด เข็ดฟัน รู้ทั้งรู้ว่าความเผ็ดมันไม่ดีต่อกระเพาะแต่มันห้ามกันไม่ได้"
+  },
+  "ต้าแก้มหอม": {
+    emoji: "🥗",
+    desc: "ป้าแนะนำให้สั่งนะหนู ถ้าใครเคยกินยำหน้าโรงเรียนจะรู้ว่ามันคือความสุขช่วงหนึ่งที่ย้อนกลับไปไม่ได้แล้ว"
+  },
+  "ต้าตง": {
+    emoji: "🔩",
+    desc: "ป้าแนะนำให้ฉีดวัคซีนบาดทะยักก่อน เพราะมันให้รสชาติเหมือนกินสนิม แรกๆจะงงหลังๆจะปลงกับชีวิต ค้นพบสัจธรรม หลังจากนั้นกินได้หมดเพราะทนพิษบาดทะยัก"
+  },
+  "หลิวแก้มหอม": {
+    emoji: "🥤",
+    desc: "ใครสั่งจานนี้ป้าแถมฟรีเป๊บซี่หนึ่งขวด รสชาตินี้จำไม่เคยลืม นัวๆอะ บางวันก็ออกแนวเปรี้ยว บางวันก็ออกแล้วขม แต่โดยรวมคือ ★★★★★"
+  },
+  "บลูตง": {
+    emoji: "🧪",
+    desc: "ป้าเองก็ไม่ค่อยเห็นคนสั่งจานนี้หรอก แต่เดี๋ยวป้าทำให้ ใช้เวลานานหน่อยนะ เพราะมันไม่กินเส้นกัน แต่ถามว่าอร่อยมั้ย หนูลองชิมก่อนแล้วมาบอกป้า โอเคนะ"
+  },
+  "หลิวตง": {
+    emoji: "🍵",
+    desc: "ป้าแนะนำอย่างมาก ช้อนแรกอย่าวางนะ ให้ลองช้อนที่สองก่อนแล้วจะรู้ว่าน้ำชาจีนมันกลมกล่อม แล้วก็ตอนกินอย่าลืมใส่ชุดสีแดงนะเพราะมันจะอร่อยกว่านี้"
+  },
+  "หลิวแหม่ม": {
+    emoji: "🫖",
+    desc: "หนูจะสั่งจานนี้จริงๆหรอ ป้าว่า.. หนูคงผ่านอะไรมาเยอะใช่มั้ยจ๊ะ ถึงได้เลือกรสชาติที่เหมาะกับตัวเอง รสชาตินี่แหละคือรสชาติของผู้ใหญ่ รักที่รักมันกินไม่ได้"
+  },
+  "ต้าแหม่ม": {
+    emoji: "🍱",
+    desc: "เมนูมิชลินอีกหนึ่งร้านที่ป้าแนะนำ หนูเข้าใจสั่งนะจ๊ะ รสชาติดี เพราะเป็นจานที่เต็มไปด้วยโภชนาการ"
+  },
+  "ต้าแก้มหอม พิเศษแหม่ม": {
+    emoji: "⭐",
+    desc: "หนูเข้าใจสั่งนะจ๊ะ ร้านป้าได้มิชลินมาจากจานนี้เลย อร่อยจนแทะจาน"
+  },
+  "หลิวแหม่ม พิเศษต้า": {
+    emoji: "😤",
+    desc: "ป้าผัดไปก็จามไป มันฉุนขึ้นตา หนูจะกินได้จริงๆใช่มั้ยลูก มันไม่ได้เผ็ดนะ มันขม หนูกินมะระได้มั้ยล่ะ"
+  },
+  "ต้าตง พิเศษบลู": {
+    emoji: "🦷",
+    desc: "อันนี้ไม่สนิมแล้วนะหนู อันนี้กินเหล็กไปทั้งแท่ง กัดได้ไหมล่ะฟันหนูน่ะ ป้าเตือนนะก่อนกินให้หาคลีนิคใกล้ฉันไว้ก่อนเลย ไม่รู้จะโดนลูกหลงหรืออะไร"
+  }
+};
+
+const questions = [
+  {
+    q: "ถ้ามีสตอเบอร์รี่หล่นลงพื้น แต่เชื้อโรคยังไม่ทันได้เห็น คุณจะ...",
+    choices: [
+      { text: "เก็บเอาไปล้างแล้วกินต่อ เชื้อโรคยังไม่ทันเห็นก็ยังโอเค", key: "บลูแก้มหอม" },
+      { text: "โยนทิ้งลงถังขยะ ทำตัวกึงๆ แต่โยนไม่ลงถัง ต้องเดินไปเก็บลงถังเองอยู่ดี", key: "หลิวแหม่ม" },
+      { text: "เอายัดเข้าปากแฟน ถามพอเป็นพิธี ถ้าไม่กินก็ทำเป็นงอน เพราะเดี๋ยวมันก็กินเอง", key: "บลูแหม่ม" },
+      { text: "กรี๊ดออกมาเพราะไม่มีอะไรสักอย่างเลย", key: "ต้าแก้มหอม พิเศษแหม่ม" }
+    ]
+  },
+  {
+    q: "ในงานวันเกิดแฟน คุณปลีกตัวออกจากงานมาหาแฟนได้ แต่ในตอนนั้นเองเกิดฝนตกขึ้นกะทันหัน คุณจะ...",
+    choices: [
+      { text: "โทรบอกแฟนว่าไปไม่ได้แล้วนะ พี่ขอโทษ", key: "หลิวแก้มหอม" },
+      { text: "เป็นเคะตัวแม่ วางท่าว่าจะไม่ไป แต่แอบไปเซอร์ไพร์สทีหลัง", key: "บลูแหม่ม" },
+      { text: "รู้ว่าฝนจะตก เลยรีบเคลียร์งานแล้วไปกอดเธอจนตัวลอย แล้วตามไปให้กำลังใจตอนเธอแสดง", key: "ต้าแก้มหอม" },
+      { text: "เอาเกิบฟาดพระพิรุณ ตะโกนว่า ถ้าตกลงมามีเรื่องแน่ ชั้นรู้นะว่าใครอยู่ข้างบน", key: "ต้าตง" }
+    ]
+  },
+  {
+    q: "มีจดหมายฉบับหนึ่งวางอยู่บนโต๊ะ ในนั้นเขียนว่า...",
+    choices: [
+      { text: "เราเหมือนณเดชกับญาญ่าสมัยก่อนเลยเนอะ", key: "หลิวแหม่ม" },
+      { text: "ไหนเมื่อคืนบอกว่าจะอยู่โต้รุ่งด้วยกัน แต่หลับก่อนเพื่อ แล้วแต่นะ", key: "ต้าแก้มหอม" },
+      { text: "สตรอเบอร์รี่หนูอยู่ไหน พี่เป็นคนกินไปใช่ป่ะ จะเอางี้ใช่มะ", key: "หลิวตง" },
+      { text: "ตัดผมสั้นอีกนะ แต่อย่าสกินเฮดละ", key: "ต้าตง" }
+    ]
+  },
+  {
+    q: "ในตอนที่แฟนกำลังพูดถึงดินฟ้าอากาศอยู่ แต่มันทำให้คุณโกรธมากเพราะเขาไม่ได้พูดถึงเรื่องของคุณเลย คุณจะ...",
+    choices: [
+      { text: "แล้วแต่ทำไรก็ทำ แต่ไปไหนก็ไป", key: "หลิวแหม่ม พิเศษต้า" },
+      { text: "คุยเรื่องอากาศของพรุ่งนี้ต่อเพราะคุณคือนักพยากรณ์อากาศ", key: "ต้าแหม่ม" },
+      { text: "เล่นเกมต่อ เพราะคุณกึง", key: "หลิวแหม่ม" },
+      { text: "ไม่ทำอะไรแต่ไปพูดกับเพื่อนว่า คุณคงเข้าใจเธออยู่แหละ จบด้วยอีโมจิหน้ายิ้มกลับหัว", key: "ต้าแก้มหอม" }
+    ]
+  },
+  {
+    q: "คุณกำลังเล่นสนุกอยู่กับกลุ่มเพื่อน แต่มีเพื่อนข้างๆ มาแอบจับมือใต้โต๊ะแน่น คุณจะ...",
+    choices: [
+      { text: "ตีมือให้กระดูกหัก เล่นไรไม่รู้เรื่อง", key: "ต้าตง พิเศษบลู" },
+      { text: "แอบเนียนจับด้วย อย่าให้ใครรู้", key: "หลิวแก้มหอม" },
+      { text: "ทำหน้าเหม็นเบื่อ จิ๊ปากใส่", key: "หลิวแหม่ม" },
+      { text: "หันไปมองทำหน้างงๆ แต่ก็ให้มันจับไปเพราะกลัวมันงอน", key: "บลูแก้มหอม" }
+    ]
+  },
+  {
+    q: "คุณกำลังโมโหมากๆ แต่อยู่ๆ เพื่อนคนนั้นก็ถอนหายใจขึ้นมาเฉยๆ คุณมองว่าเขา...",
+    choices: [
+      { text: "กล้าถอนหายใจใส่ชั้นหรอ", key: "ต้าแหม่ม" },
+      { text: "คนอะไรเนี่ย แค่หายใจยังน่ารักเลย", key: "ต้าแก้มหอม" },
+      { text: "ถอนหายใจตาม เพราะเบื่อมัน แทนที่จะช่วยกันโมโห", key: "ต้าตง พิเศษบลู" },
+      { text: "หายโมโหเรื่องนั้นแล้วไปโมโหมันแทน", key: "ต้าแหม่ม" }
+    ]
+  },
+  {
+    q: "คุณแอบชอบรุ่นพี่คนหนึ่งอยู่ แต่เขาตัวติดกับเพื่อนคนหนึ่งมาก และคุณเป็นสาววาย คุณจะ...",
+    choices: [
+      { text: "จับชงจิ้นจนอีลอนปิดกั้นการมองเห็น", key: "บลูตง" },
+      { text: "บอกกับพี่คนนั้นว่า พี่ไม่รักหนูไม่เป็นไรค่ะ แต่พี่ต้องรักเค้านะ", key: "หลิวตง" },
+      { text: "บอกต่อความอร่อย ขายจิ้นให้คนมามุง", key: "ต้าตง" },
+      { text: "ถามออกไปด้วยความสงสัย พี่เป็นแฟนกันรึเปล่าคะ", key: "หลิวแหม่ม" }
+    ]
+  },
+  {
+    q: "คุณกำลังนั่งรถอยู่แต่จู่ๆ ก็ง่วงขึ้นมา มีเพื่อนคนหนึ่งเสนอให้พิงไหล่เค้านอน คุณคิดว่า...",
+    choices: [
+      { text: "ไอ้หมอนี่มันกึงอะไรของมันอะ", key: "ต้าแหม่ม" },
+      { text: "ชั้นเหงานะแต่ชั้นไม่ง่าย", key: "ต้าแก้มหอม" },
+      { text: "ปากบอกว่าไม่แต่ก็พิงมันหลับอยู่ดี", key: "ต้าตง พิเศษบลู" },
+      { text: "ตะโกนขอความช่วยเหลือ ไอ้หมอนี่มันจีบคุณแน่ๆ", key: "ต้าแหม่ม" }
+    ]
+  },
+  {
+    q: "แฟนคุณฝันว่าทะเลาะกับคุณ และตื่นเช้าจู่ๆ ก็โกรธคุณซะงั้น คุณงงมากว่ามันเกิดอะไรขึ้น ก็เลยถามเธอออกไปว่า...",
+    choices: [
+      { text: "คุณไม่ถามแต่แอบเนียนคุยให้มันลืมว่าโกรธคุณ", key: "บลูแหม่ม" },
+      { text: "คุณไม่ถามเพราะชินแล้ว เดี๋ยวพรุ่งนี้มันก็ฝันอีก", key: "หลิวแหม่ม" },
+      { text: "ถามตรงๆ ว่าในฝันมีตัวเลขมั้ย ถ้ามีก็รีบบอกมาเดี๋ยวมันอั้น", key: "ต้าตง" },
+      { text: "ทำกึงทำงงว่างอนอะไร แต่ก็ง้อจนตัวตาย", key: "บลูตง" }
+    ]
+  },
+  {
+    q: "คุณติดเกมในมือถือมาก แม้แต่ตอนที่แฟนพูด จนแฟนพูดออกมาว่า 'หยุดเล่นเกมสักที พี่โฟกัสสองอย่างไม่ได้ด้วยซ้ำ' คุณจะ...",
+    choices: [
+      { text: "โหลดอีกเกมมาเล่นเพราะเคลียร์ด่านเกมนี้หมดแล้ว", key: "หลิวแก้มหอม" },
+      { text: "รับทราบแต่ไม่รับเรื่อง", key: "บลูแก้มหอม" },
+      { text: "เล่นเกมต่อเพราะชินแล้ว ถึงไม่ใช่เกมมันก็หาเรื่องบ่นอยู่ทุกวัน", key: "หลิวแหม่ม พิเศษต้า" },
+      { text: "บอกเธอว่าไม่เล่นแล้ว พร้อมลบเกมในมือถือทิ้ง แต่ไปโหลดในไอแพดแทน", key: "ต้าตง พิเศษบลู" }
+    ]
+  }
+];
+
+let currentQ = 0;
+let scores = {};
+
+function startQuiz() {
+  currentQ = 0;
+  scores = {};
+  Object.keys(results).forEach(k => scores[k] = 0);
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('q-counter').textContent = 'ข้อ ' + (currentQ + 1) + ' / ' + questions.length;
+  document.getElementById('progress-bar').style.width = ((currentQ / questions.length) * 100) + '%';
+  document.getElementById('q-text').textContent = q.q;
+
+  const labels = ['A', 'B', 'C', 'D'];
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  q.choices.forEach(function(c, i) {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = '<span class="choice-label">' + labels[i] + '.</span>' + c.text;
+    btn.onclick = function() { selectChoice(c.key, btn); };
+    choicesEl.appendChild(btn);
+  });
+}
+
+function selectChoice(key, btn) {
+  document.querySelectorAll('.choice-btn').forEach(function(b) {
+    b.classList.remove('selected');
+    b.onclick = null;
+  });
+  btn.classList.add('selected');
+  scores[key]++;
+  setTimeout(function() {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }, 380);
+}
+
+function showResult() {
+  const sorted = Object.entries(scores).sort(function(a, b) { return b[1] - a[1]; });
+  const winner = sorted[0][0];
+  const r = results[winner];
+  const maxScore = sorted[0][1];
+
+  document.getElementById('result-emoji').textContent = r.emoji;
+  document.getElementById('result-name').textContent = winner;
+  document.getElementById('result-desc').textContent = r.desc;
+
+  const barsEl = document.getElementById('score-bars');
+  barsEl.innerHTML = '';
+  sorted.filter(function(e) { return e[1] > 0; }).forEach(function(entry) {
+    const pct = maxScore > 0 ? Math.round((entry[1] / maxScore) * 100) : 0;
+    const row = document.createElement('div');
+    row.className = 'score-row';
+    row.innerHTML =
+      '<div class="score-name">' + entry[0] + '</div>' +
+      '<div class="score-track"><div class="score-fill" style="width:0%" data-pct="' + pct + '"></div></div>' +
+      '<div class="score-num">' + entry[1] + '</div>';
+    barsEl.appendChild(row);
+  });
+
+  showScreen('screen-result');
+
+  setTimeout(function() {
+    document.querySelectorAll('.score-fill').forEach(function(el) {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 200);
+}
+
+function resetQuiz() {
+  showScreen('screen-start');
+}
+</script>
+</body>
+</html>
