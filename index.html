@@ -267,7 +267,9 @@ function selectChoice(menu, btn) {
 
 function showResult() {
   var sorted = Object.entries(scores).filter(function(e) { return e[1] > 0; }).sort(function(a,b) { return b[1]-a[1]; });
-  var winner = sorted[0][0];
+  var topScore = sorted[0][1];
+  var tied = sorted.filter(function(e) { return e[1] === topScore; });
+  var winner = tied[Math.floor(Math.random() * tied.length)][0];
   var r = results[winner];
   var maxScore = sorted[0][1];
   document.getElementById('result-emoji').textContent = r.emoji;
