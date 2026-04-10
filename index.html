@@ -26,7 +26,6 @@
   }
   .screen { display: none; }
   .screen.active { display: block; }
-
   .start-emoji { font-size: 64px; text-align: center; margin-bottom: 16px; }
   .start-title { font-size: 26px; font-weight: 800; text-align: center; color: #1a1a1a; margin-bottom: 10px; line-height: 1.4; }
   .start-sub { font-size: 15px; color: #888; text-align: center; margin-bottom: 32px; line-height: 1.7; }
@@ -40,7 +39,6 @@
     font-family: 'Sarabun', sans-serif;
   }
   .start-btn:hover { transform: translateY(-2px); }
-
   .progress-bar-wrap { background: #f0f0f0; border-radius: 99px; height: 8px; margin-bottom: 28px; overflow: hidden; }
   .progress-bar { height: 100%; border-radius: 99px; background: linear-gradient(135deg, #ff8a65, #f06292); transition: width 0.4s ease; }
   .q-counter { font-size: 13px; color: #aaa; margin-bottom: 10px; text-align: right; }
@@ -55,7 +53,6 @@
   .choice-label { font-weight: 700; color: #f06292; margin-right: 6px; }
   .choice-btn:hover { background: #fff5f8; border-color: #f06292; }
   .choice-btn.selected { background: linear-gradient(135deg, #fff5f8, #fff8f0); border-color: #ff8a65; color: #c0397a; font-weight: 600; }
-
   .result-emoji { font-size: 72px; text-align: center; margin-bottom: 12px; }
   .result-label { font-size: 13px; text-align: center; color: #aaa; letter-spacing: 2px; margin-bottom: 6px; }
   .result-name { font-size: 28px; font-weight: 800; text-align: center; color: #e64a7b; margin-bottom: 20px; line-height: 1.3; }
@@ -83,14 +80,12 @@
 </head>
 <body>
 <div class="container">
-
   <div class="screen active" id="screen-start">
     <div class="start-emoji">🍜</div>
     <div class="start-title">น่าหนาวตามสั่ง</div>
     <div class="start-sub">ป้ามีเมนูพิเศษ 15 อย่าง<br>ตอบคำถาม 10 ข้อแล้วป้าจะแนะนำเมนูที่ใช่สำหรับหนูเอง 🍽️</div>
     <button class="start-btn" onclick="startQuiz()">เข้าร้านป้าเลย →</button>
   </div>
-
   <div class="screen" id="screen-quiz">
     <div class="progress-bar-wrap">
       <div class="progress-bar" id="progress-bar" style="width:0%"></div>
@@ -99,7 +94,6 @@
     <div class="q-text" id="q-text"></div>
     <div class="choices" id="choices"></div>
   </div>
-
   <div class="screen" id="screen-result">
     <div class="result-emoji" id="result-emoji"></div>
     <div class="result-label">ป้าแนะนำเมนู</div>
@@ -111,7 +105,6 @@
     </div>
     <button class="retry-btn" onclick="resetQuiz()">กลับมากินอีกครั้ง 🍜</button>
   </div>
-
 </div>
 <script>
 const results = {
@@ -136,91 +129,91 @@ const questions = [
   {
     q: "ถ้ามีสตอเบอร์รี่หล่นลงพื้น แต่เชื้อโรคยังไม่ทันได้เห็น คุณจะ...",
     choices: [
-      { text: "เก็บเอาไปล้างแล้วกินต่อ เชื้อโรคยังไม่ทันเห็นก็ยังโอเค", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "โยนทิ้งลงถังขยะ ทำตัวกึงๆ แต่โยนไม่ลงถัง ต้องเดินไปเก็บลงถังเองอยู่ดี", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "เอายัดเข้าปากแฟน ถามพอเป็นพิธี ถ้าไม่กินก็ทำเป็นงอน เพราะเดี๋ยวมันก็กินเอง", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "กรี๊ดออกมาเพราะไม่มีอะไรได้ดั่งใจสักอย่างเลย", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} }
+      { text: "เก็บเอาไปล้างแล้วกินต่อ เชื้อโรคยังไม่ทันเห็นก็ยังโอเค", menu: "ต้าแหม่ม" },
+      { text: "โยนทิ้งลงถังขยะ ทำตัวกึงๆ แต่โยนไม่ลงถัง ต้องเดินไปเก็บลงถังเองอยู่ดี", menu: "หลิวตง" },
+      { text: "เอายัดเข้าปากแฟน ถามพอเป็นพิธี ถ้าไม่กินก็ทำเป็นงอน เพราะเดี๋ยวมันก็กินเอง", menu: "ต้าแจง" },
+      { text: "กรี๊ดออกมาเพราะไม่มีอะไรได้ดั่งใจสักสักอย่างเลย", menu: "ริน่าแก้มหอม" }
     ]
   },
   {
     q: "ในงานวันเกิดแฟน คุณปลีกตัวออกจากงานมาหาแฟนได้ แต่ในตอนนั้นเองเกิดฝนตกขึ้นกะทันหัน คุณจะ...",
     choices: [
-      { text: "โทรบอกแฟนว่าไปไม่ได้แล้วนะ พี่ขอโทษ", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "เป็นเคะตัวแม่ วางท่าว่าจะไม่ไป แต่แอบไปเซอร์ไพร์สทีหลัง", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "รู้ว่าฝนจะตก เลยรีบเคลียร์งานแล้วไปกอดเธอจนตัวลอย แล้วตามไปให้กำลังใจตอนเธอแสดง", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "เอาเกิบฟาดพระพิรุณ ตะโกนว่า ถ้าตกลงมามีเรื่องแน่ ชั้นรู้นะว่าใครอยู่ข้างบน", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} }
+      { text: "โทรบอกแฟนว่าไปไม่ได้แล้วนะ พี่ขอโทษ", menu: "บลูแก้มหอม" },
+      { text: "เป็นเคะตัวแม่ วางท่าว่าจะไม่ไป แต่แอบไปเซอร์ไพร์สทีหลัง", menu: "ต้าตง พิเศษบลู" },
+      { text: "รู้ว่าฝนจะตก เลยรีบเคลียร์งานแล้วไปกอดเธอจนตัวลอย แล้วตามไปให้กำลังใจตอนเธอแสดง", menu: "หลิวตง" },
+      { text: "เอาเกิบฟาดพระพิรุณ ตะโกนว่า ถ้าตกลงมามีเรื่องแน่ ชั้นรู้นะว่าใครอยู่ข้างบน", menu: "บลูตง" }
     ]
   },
   {
     q: "มีจดหมายฉบับหนึ่งวางอยู่บนโต๊ะ ในนั้นเขียนว่า...",
     choices: [
-      { text: "เราเหมือนณเดชกับญาญ่าสมัยก่อนเลยเนอะ", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "ไหนเมื่อคืนบอกว่าจะอยู่โต้รุ่งด้วยกัน แต่หลับก่อนเพื่อ แล้วแต่นะ", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "สตรอเบอร์รี่หนูอยู่ไหน พี่เป็นคนกินไปใช่ป่ะ จะเอางี้ใช่มะ", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "ตัดผมสั้นอีกนะ แต่อย่าสกินเฮดละ", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} }
+      { text: "เราเหมือนณเดชกับญาญ่าสมัยก่อนเลยเนอะ", menu: "ต้าแก้มหอม" },
+      { text: "ไหนเมื่อคืนบอกว่าจะอยู่โต้รุ่งด้วยกัน แต่หลับก่อนเพื่อ แล้วแต่นะ", menu: "หลิวแหม่ม พิเศษต้า" },
+      { text: "สตรอเบอร์รี่หนูอยู่ไหน พี่เป็นคนกินไปใช่ป่ะ จะเอางี้ใช่มะ", menu: "ต้าตง พิเศษบลู" },
+      { text: "ตัดผมสั้นอีกนะ แต่อย่าสกินเฮดละ", menu: "หลิวแก้มหอม" }
     ]
   },
   {
     q: "ในตอนที่แฟนกำลังพูดถึงดินฟ้าอากาศอยู่ แต่มันทำให้คุณโกรธมากเพราะเขาไม่ได้พูดถึงเรื่องของคุณเลย คุณจะ...",
     choices: [
-      { text: "แล้วแต่ทำไรก็ทำ แต่ไปไหนก็ไป", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "คุยเรื่องอากาศของพรุ่งนี้ต่อเพราะคุณคือนักพยากรณ์อากาศ", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "เล่นเกมต่อ เพราะคุณกึง", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "ไม่ทำอะไรแต่ไปพูดกับเพื่อนว่า คุณคงเข้าใจเธออยู่แหละ จบด้วยอีโมจิหน้ายิ้มกลับหัว", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} }
+      { text: "แล้วแต่ทำไรก็ทำ แต่ไปไหนก็ไป", menu: "หลิวแหม่ม" },
+      { text: "คุยเรื่องอากาศของพรุ่งนี้ต่อเพราะคุณคือนักพยากรณ์อากาศ", menu: "ริน่าแก้มหอม" },
+      { text: "เล่นเกมต่อ เพราะคุณกึง", menu: "บลูแหม่ม" },
+      { text: "ไม่ทำอะไรแต่ไปพูดกับเพื่อนว่า คุณคงเข้าใจเธออยู่แหละ จบด้วยอีโมจิหน้ายิ้มกลับหัว", menu: "หลิวแก้มหอม" }
     ]
   },
   {
     q: "คุณกำลังเล่นสนุกอยู่กับกลุ่มเพื่อน แต่มีเพื่อนข้างๆ มาแอบจับมือใต้โต๊ะแน่น คุณจะ...",
     choices: [
-      { text: "ตีมือให้กระดูกหัก เล่นไรไม่รู้เรื่อง", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "แอบเนียนจับด้วย อย่าให้ใครรู้", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "ทำหน้าเหม็นเบื่อ จิ๊ปากใส่", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "หันไปมองทำหน้างงๆ แต่ก็ให้มันจับไปเพราะกลัวมันงอน", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} }
+      { text: "ตีมือให้กระดูกหัก เล่นไรไม่รู้เรื่อง", menu: "บลูแหม่ม" },
+      { text: "แอบเนียนจับด้วย อย่าให้ใครรู้", menu: "ต้าแหม่ม" },
+      { text: "ทำหน้าเหม็นเบื่อ จิ๊ปากใส่", menu: "ต้าแก้มหอม" },
+      { text: "หันไปมองทำหน้างงๆ แต่ก็ให้มันจับไปเพราะกลัวมันงอน", menu: "บลูแก้มหอม" }
     ]
   },
   {
     q: "คุณกำลังโมโหมากๆ แต่อยู่ๆ เพื่อนคนนั้นก็ถอนหายใจขึ้นมาเฉยๆ คุณมองว่าเขา...",
     choices: [
-      { text: "กล้าถอนหายใจใส่ชั้นหรอ", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "คนอะไรเนี่ย แค่หายใจยังน่ารักเลย", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "ถอนหายใจตาม เพราะเบื่อมัน แทนที่จะช่วยกันโมโห", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "หายโมโหเรื่องนั้นแล้วไปโมโหมันแทน", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} }
+      { text: "กล้าถอนหายใจใส่ชั้นหรอ", menu: "ต้าแจง" },
+      { text: "คนอะไรเนี่ย แค่หายใจยังน่ารักเลย", menu: "บลูแก้มหอม" },
+      { text: "ถอนหายใจตาม เพราะเบื่อมัน แทนที่จะช่วยกันโมโห", menu: "ต้าตง" },
+      { text: "หายโมโหเรื่องนั้นแล้วไปโมโหมันแทน", menu: "บลูตง" }
     ]
   },
   {
     q: "คุณแอบชอบรุ่นพี่คนหนึ่งอยู่ แต่เขาตัวติดกับเพื่อนคนหนึ่งมาก และคุณเป็นสาววาย คุณจะ...",
     choices: [
-      { text: "จับชงจิ้นจนอีลอนปิดกั้นการมองเห็น", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "บอกกับพี่คนนั้นว่า พี่ไม่รักหนูไม่เป็นไรค่ะ แต่พี่ต้องรักเค้านะ", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "บอกต่อความอร่อย ขายจิ้นให้คนมามุง", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "ถามออกไปด้วยความสงสัย พี่เป็นแฟนกันรึเปล่าคะ", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} }
+      { text: "จับชงจิ้นจนอีลอนปิดกั้นการมองเห็น", menu: "หลิวแก้มหอม" },
+      { text: "บอกกับพี่คนนั้นว่า พี่ไม่รักหนูไม่เป็นไรค่ะ แต่พี่ต้องรักเค้านะ", menu: "ต้าแก้มหอม พิเศษแหม่ม" },
+      { text: "บอกต่อความอร่อย ขายจิ้นให้คนมามุง", menu: "หลิวแหม่ม" },
+      { text: "ถามออกไปด้วยความสงสัย พี่เป็นแฟนกันรึเปล่าคะ", menu: "ริน่าแหม่ม" }
     ]
   },
   {
     q: "คุณกำลังนั่งรถอยู่แต่จู่ๆ ก็ง่วงขึ้นมา มีเพื่อนคนหนึ่งเสนอให้พิงไหล่เค้านอน คุณคิดว่า...",
     choices: [
-      { text: "ไอ้หมอนี่มันกึงอะไรของมันอะ", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "ชั้นเหงานะแต่ชั้นไม่ง่าย", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "ปากบอกว่าไม่แต่ก็พิงมันหลับอยู่ดี", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} },
-      { text: "ตะโกนขอความช่วยเหลือ ไอ้หมอนี่มันจีบคุณแน่ๆ", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} }
+      { text: "ไอ้หมอนี่มันกึงอะไรของมันอะ", menu: "ต้าแก้มหอม พิเศษแหม่ม" },
+      { text: "ชั้นเหงานะแต่ชั้นไม่ง่าย", menu: "ริน่าแหม่ม" },
+      { text: "ปากบอกว่าไม่แต่ก็พิงมันหลับอยู่ดี", menu: "ต้าแหม่ม" },
+      { text: "ตะโกนขอความช่วยเหลือ ไอ้หมอนี่มันจีบคุณแน่ๆ", menu: "ต้าตง" }
     ]
   },
   {
     q: "แฟนคุณฝันว่าทะเลาะกับคุณ และตื่นเช้าจู่ๆ ก็โกรธคุณซะงั้น คุณงงมากว่ามันเกิดอะไรขึ้น ก็เลยถามเธอออกไปว่า...",
     choices: [
-      { text: "คุณไม่ถามแต่แอบเนียนคุยให้มันลืมว่าโกรธคุณ", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "คุณไม่ถามเพราะชินแล้ว เดี๋ยวพรุ่งนี้มันก็ฝันอีก", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "ถามตรงๆ ว่าในฝันมีตัวเลขมั้ย ถ้ามีก็รีบบอกมาเดี๋ยวมันอั้น", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} },
-      { text: "ทำกึงทำงงว่างอนอะไร แต่ก็ง้อจนตัวตาย", scores: {"บลูแก้มหอม":1,"บลูแหม่ม":1,"ต้าแก้มหอม":1} }
+      { text: "คุณไม่ถามแต่แอบเนียนคุยให้มันลืมว่าโกรธคุณ", menu: "บลูแหม่ม" },
+      { text: "คุณไม่ถามเพราะชินแล้ว เดี๋ยวพรุ่งนี้มันก็ฝันอีก", menu: "ต้าแก้มหอม" },
+      { text: "ถามตรงๆ ว่าในฝันมีตัวเลขมั้ย ถ้ามีก็รีบบอกมาเดี๋ยวมันอั้น", menu: "หลิวแหม่ม พิเศษต้า" },
+      { text: "ทำกึงทำงงว่างอนอะไร แต่ก็ง้อจนตัวตาย", menu: "หลิวตง" }
     ]
   },
   {
     q: "คุณติดเกมในมือถือมาก แม้แต่ตอนที่แฟนพูด จนแฟนพูดออกมาว่า 'หยุดเล่นเกมสักที พี่โฟกัสสองอย่างไม่ได้ด้วยซ้ำ' คุณจะ...",
     choices: [
-      { text: "โหลดอีกเกมมาเล่นเพราะเคลียร์ด่านเกมนี้หมดแล้ว", scores: {"ต้าตง":1,"หลิวแก้มหอม":1,"บลูตง":1} },
-      { text: "รับทราบแต่ไม่รับเรื่อง", scores: {"หลิวตง":1,"หลิวแหม่ม":1,"ต้าแหม่ม":1} },
-      { text: "เล่นเกมต่อเพราะชินแล้ว ถึงไม่ใช่เกมมันก็หาเรื่องบ่นอยู่ทุกวัน", scores: {"ต้าแก้มหอม พิเศษแหม่ม":1,"หลิวแหม่ม พิเศษต้า":1,"ต้าตง พิเศษบลู":1} },
-      { text: "บอกเธอว่าไม่เล่นแล้ว พร้อมลบเกมในมือถือทิ้ง แต่ไปโหลดในไอแพดแทน", scores: {"ริน่าแหม่ม":1,"ต้าแจง":1,"ริน่าแก้มหอม":1} }
+      { text: "โหลดอีกเกมมาเล่นเพราะเคลียร์ด่านเกมนี้หมดแล้ว", menu: "บลูตง" },
+      { text: "รับทราบแต่ไม่รับเรื่อง", menu: "ต้าแก้มหอม พิเศษแหม่ม" },
+      { text: "เล่นเกมต่อเพราะชินแล้ว ถึงไม่ใช่เกมมันก็หาเรื่องบ่นอยู่ทุกวัน", menu: "บลูแก้มหอม" },
+      { text: "บอกเธอว่าไม่เล่นแล้ว พร้อมลบเกมในมือถือทิ้ง แต่ไปโหลดในไอแพดแทน", menu: "ต้าตง" }
     ]
   }
 ];
@@ -246,75 +239,56 @@ function renderQuestion() {
   document.getElementById('q-counter').textContent = 'ข้อ ' + (currentQ + 1) + ' / ' + questions.length;
   document.getElementById('progress-bar').style.width = ((currentQ / questions.length) * 100) + '%';
   document.getElementById('q-text').textContent = q.q;
-
-  var labels = ['A', 'B', 'C', 'D'];
+  var labels = ['A','B','C','D'];
   var choicesEl = document.getElementById('choices');
   choicesEl.innerHTML = '';
   q.choices.forEach(function(c, i) {
     var btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.innerHTML = '<span class="choice-label">' + labels[i] + '.</span>' + c.text;
-    btn.onclick = function() { selectChoice(c.scores, btn); };
+    btn.onclick = function() { selectChoice(c.menu, btn); };
     choicesEl.appendChild(btn);
   });
 }
 
-function selectChoice(choiceScores, btn) {
+function selectChoice(menu, btn) {
   document.querySelectorAll('.choice-btn').forEach(function(b) {
     b.classList.remove('selected');
     b.onclick = null;
   });
   btn.classList.add('selected');
-
-  Object.keys(choiceScores).forEach(function(menu) {
-    scores[menu] = (scores[menu] || 0) + choiceScores[menu];
-  });
-
+  scores[menu] = (scores[menu] || 0) + 1;
   setTimeout(function() {
     currentQ++;
-    if (currentQ < questions.length) {
-      renderQuestion();
-    } else {
-      showResult();
-    }
+    if (currentQ < questions.length) renderQuestion();
+    else showResult();
   }, 380);
 }
 
 function showResult() {
-  var sorted = Object.entries(scores).sort(function(a, b) { return b[1] - a[1]; });
+  var sorted = Object.entries(scores).filter(function(e) { return e[1] > 0; }).sort(function(a,b) { return b[1]-a[1]; });
   var winner = sorted[0][0];
   var r = results[winner];
   var maxScore = sorted[0][1];
-
   document.getElementById('result-emoji').textContent = r.emoji;
   document.getElementById('result-name').textContent = winner;
   document.getElementById('result-desc').textContent = r.desc;
-
   var barsEl = document.getElementById('score-bars');
   barsEl.innerHTML = '';
-  sorted.filter(function(e) { return e[1] > 0; }).forEach(function(entry) {
-    var pct = maxScore > 0 ? Math.round((entry[1] / maxScore) * 100) : 0;
+  sorted.forEach(function(entry) {
+    var pct = maxScore > 0 ? Math.round((entry[1]/maxScore)*100) : 0;
     var row = document.createElement('div');
     row.className = 'score-row';
-    row.innerHTML =
-      '<div class="score-name">' + entry[0] + '</div>' +
-      '<div class="score-track"><div class="score-fill" style="width:0%" data-pct="' + pct + '"></div></div>' +
-      '<div class="score-num">' + entry[1] + '</div>';
+    row.innerHTML = '<div class="score-name">'+entry[0]+'</div><div class="score-track"><div class="score-fill" style="width:0%" data-pct="'+pct+'"></div></div><div class="score-num">'+entry[1]+'</div>';
     barsEl.appendChild(row);
   });
-
   showScreen('screen-result');
-
   setTimeout(function() {
-    document.querySelectorAll('.score-fill').forEach(function(el) {
-      el.style.width = el.dataset.pct + '%';
-    });
+    document.querySelectorAll('.score-fill').forEach(function(el) { el.style.width = el.dataset.pct+'%'; });
   }, 200);
 }
 
-function resetQuiz() {
-  showScreen('screen-start');
-}
+function resetQuiz() { showScreen('screen-start'); }
 </script>
 </body>
 </html>
